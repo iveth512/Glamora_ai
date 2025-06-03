@@ -1,5 +1,37 @@
+# Entornos virtuales
 venv/
+ENV/
+.env/
+.venv/
+
+# Archivos de Python compilados
 __pycache__/
-.qodo
+*.py[cod]
+*$py.class
+
+# Archivos de entorno y configuración
 .env
+.env.*
+
+# Archivos de logs
+*.log
+
+# Archivos de bases de datos
+*.sqlite3
+*.db
+
+# Archivos de configuración de editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Otros
+.qodo
+
+# Evitar duplicados
 __pycache__/
