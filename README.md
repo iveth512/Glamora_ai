@@ -53,7 +53,6 @@ Glamora AI es un asistente conversacional de moda que utiliza inteligencia artif
 - El archivo `.env` ya está en el `.gitignore` por defecto.
 
 ## Créditos
-Realizado por Leonardo Osorio e Iveth Ramírez 
 Bootcamp de Inteligencia Artificial TALENTOTECH
 
 ## Iniciar API
