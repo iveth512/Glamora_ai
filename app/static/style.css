@@ -1,0 +1,11 @@
+/* static/style.css */
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+    color: #333;
+    padding: 2em;
+}
+
+h1 {
+    color: #0077cc;
+}

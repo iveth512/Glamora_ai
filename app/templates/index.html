@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glamora AI - Fashion Chat</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='22' fill='%235e60ce'/><text x='50%' y='58%' text-anchor='middle' fill='white' font-size='18' font-family='Poppins' dy='.3em'>G</text></svg>">
+    <link href="/static/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      html, body {
+        transition: background 0.5s;
+      }
+      body {
+        font-family: 'Poppins', 'Inter', 'Noto Sans', sans-serif;
+        background: linear-gradient(120deg, #181824 0%, #23233a 100%);
+      }
+      body.light {
+        background: linear-gradient(120deg, #f6f7fa 0%, #e3e7ef 100%);
+      }
+      .glass {
+        background: rgba(30, 30, 40, 0.85);
+        box-shadow: 0 8px 32px 0 rgba(20, 20, 40, 0.25);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 0 0 24px 24px;
+        border: 1.5px solid rgba(80,80,120,0.18);
+        border-top: none;
+        transition: background 0.5s;
+      }
+      body.light .glass {
+        background: rgba(248,250,252,0.92);
+        box-shadow: 0 8px 32px 0 rgba(180,180,200,0.08);
+        border: 1.5px solid #e3e7ef;
+        border-radius: 0 0 24px 24px;
+        border-top: none;
+      }
+      .header-bar {
+        background: linear-gradient(90deg, #23233a 60%, #5e60ce 100%);
+        border-bottom: 2.5px solid #5e60ce;
+        box-shadow: 0 4px 24px 0 rgba(80,80,120,0.10);
+        border-radius: 0 0 24px 24px;
+        transition: background 0.5s, border 0.5s, box-shadow 0.5s;
+        min-height: 64px;
+        position: relative;
+        z-index: 10;
+      }
+      body.light .header-bar {
+        background: linear-gradient(90deg, #f6f7fa 60%, #b6c6e3 100%);
+        border-bottom: 2.5px solid #b6c6e3;
+        box-shadow: 0 4px 24px 0 rgba(180,180,200,0.06);
+        border-radius: 0 0 24px 24px;
+      }
+      body.light .glass {
+        background: rgba(248,250,252,0.92);
+        box-shadow: 0 8px 32px 0 rgba(180,180,200,0.08);
+        border: 1.5px solid #e3e7ef;
+      }
+      .glam-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 2.5rem;
+        letter-spacing: 0.04em;
+        color: #f7f7fa;
+        text-shadow: 0 2px 16px rgba(80,80,120,0.18);
+        font-weight: 700;
+        transition: color 0.5s;
+        opacity: 0;
+        transform: translateY(-60px) scale(0.92) skewY(-4deg);
+        animation: glam-intro-title 1.2s cubic-bezier(.4,0,.2,1) 0.2s forwards;
+      }
+      body.light .glam-title {
+        color: #1a1a2a;
+        text-shadow: 0 2px 16px rgba(180,180,200,0.04);
+      }
+      @keyframes glam-intro-title {
+        0% { opacity: 0; transform: translateY(-60px) scale(0.92) skewY(-4deg); filter: blur(8px); }
+        60% { opacity: 1; transform: translateY(10px) scale(1.04) skewY(2deg); filter: blur(0); }
+        100% { opacity: 1; transform: translateY(0) scale(1) skewY(0); filter: blur(0); }
+      }
+      .glam-desc {
+        font-size: 1.1rem;
+        color: #bdbdd7;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        opacity: 0;
+        animation: glam-intro-desc 1.3s cubic-bezier(.4,0,.2,1) 0.9s forwards;
+        transition: color 0.5s;
+      }
+      @keyframes glam-intro-desc {
+        0% { opacity: 0; transform: translateY(40px) scale(0.98) skewY(2deg); filter: blur(8px); }
+        60% { opacity: 1; transform: translateY(-8px) scale(1.01) skewY(-1deg); filter: blur(0); }
+        100% { opacity: 1; transform: translateY(0) scale(1) skewY(0); filter: blur(0); }
+      }
+      body.light .glam-desc {
+        color: #6a6a8a;
+      }
+      .emoji-menu {
+        position: absolute;
+        bottom: 60px;
+        left: 0;
+        z-index: 10;
+        background: #23233a;
+        border-radius: 16px;
+        box-shadow: 0 2px 16px 0 rgba(80, 0, 120, 0.08);
+        padding: 0.5rem 0.75rem;
+        display: none;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        max-width: 320px;
+        max-height: 180px;
+        overflow-y: auto;
+        font-size: 1.5rem;
+        border: 1px solid #35355a;
+        transition: background 0.5s;
+      }
+      body.light .emoji-menu {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+      }
+      .emoji-menu button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        transition: transform 0.1s;
+      }
+      .emoji-menu button:hover {
+        transform: scale(1.2);
+      }
+      .chat-bubble-user {
+        background: linear-gradient(90deg, #3a3a5a 0%, #5e60ce 100%);
+        color: #f7f7fa;
+        box-shadow: 0 2px 8px 0 rgba(80,80,120,0.18);
+        transition: background 0.5s, color 0.5s;
+      }
+      body.light .chat-bubble-user {
+        background: linear-gradient(90deg, #e3e7ef 0%, #b6c6e3 100%);
+        color: #23233a;
+      }
+      .chat-bubble-bot {
+        background: #23233a;
+        color: #bdbdd7;
+        box-shadow: 0 2px 8px 0 rgba(80,80,120,0.18);
+        transition: background 0.5s, color 0.5s;
+      }
+      body.light .chat-bubble-bot {
+        background: #f4f6fa;
+        color: #4a4a6a;
+      }
+      .send-btn {
+        background: linear-gradient(90deg, #5e60ce 0%, #3a3a5a 100%);
+        color: #fff;
+        font-weight: bold;
+        box-shadow: 0 2px 8px 0 rgba(80,80,120,0.10);
+        transition: transform 0.1s, box-shadow 0.1s, background 0.5s, color 0.5s;
+      }
+      .send-btn:hover {
+        transform: scale(1.07);
+        box-shadow: 0 4px 16px 0 rgba(80,80,120,0.18);
+        filter: drop-shadow(0 0 6px #5e60ce88);
+      }
+      body.light .send-btn {
+        background: linear-gradient(90deg, #b6c6e3 0%, #e3e7ef 100%);
+        color: #23233a;
+      }
+      .input-bg {
+        background: #23233a;
+        color: #f7f7fa;
+        transition: background 0.5s, color 0.5s;
+      }
+      body.light .input-bg {
+        background: #f6f7fa;
+        color: #23233a;
+      }
+      .header-bar {
+        background: linear-gradient(90deg, #23233a 60%, #5e60ce 100%);
+        border-bottom: 2.5px solid #5e60ce;
+        box-shadow: 0 4px 24px 0 rgba(80,80,120,0.10);
+        border-radius: 0 0 24px 24px;
+        transition: background 0.5s, border 0.5s, box-shadow 0.5s;
+        min-height: 64px;
+        position: relative;
+        z-index: 10;
+      }
+      body.light .header-bar {
+        background: linear-gradient(90deg, #f6f7fa 60%, #b6c6e3 100%);
+        border-bottom: 2.5px solid #b6c6e3;
+        box-shadow: 0 4px 24px 0 rgba(180,180,200,0.06);
+      }
+      .header-title {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 1.35rem;
+        letter-spacing: 0.08em;
+        color: #f7f7fa;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        text-shadow: 0 2px 12px #5e60ce22;
+        transition: color 0.5s, text-shadow 0.5s, font-weight 0.5s;
+      }
+      body.light .header-title {
+        color: #23233a;
+        text-shadow: 0 2px 12px #b6c6e322;
+      }
+      .header-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #5e60ce 0%, #23233a 100%);
+        border-radius: 50%;
+        color: #fff;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 8px 0 rgba(80,80,120,0.18);
+        border: 2.5px solid #fff2;
+        transition: background 0.5s, color 0.5s, border 0.5s;
+      }
+      body.light .header-icon {
+        background: linear-gradient(135deg, #b6c6e3 0%, #e3e7ef 100%);
+        color: #23233a;
+        border: 2.5px solid #b6c6e322;
+      }
+      /* Animación de aparición de mensajes */
+      .msg-appear {
+        animation: msg-fadein 0.5s cubic-bezier(.4,0,.2,1);
+      }
+      @keyframes msg-fadein {
+        from { opacity: 0; transform: translateY(20px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      /* Loader/Spinner */
+      .loader {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        width: 36px;
+        height: 16px;
+        vertical-align: middle;
+        gap: 2px;
+      }
+      .loader span {
+        display: block;
+        width: 7px;
+        height: 7px;
+        margin: 0 1.5px;
+        background: #5e60ce;
+        border-radius: 50%;
+        opacity: 0.7;
+        animation: loader-bounce 0.85s infinite cubic-bezier(.4,0,.2,1);
+      }
+      .loader span:nth-child(2) {
+        animation-delay: 0.18s;
+      }
+      .loader span:nth-child(3) {
+        animation-delay: 0.36s;
+      }
+      @keyframes loader-bounce {
+        0% { transform: translateY(0); opacity: 0.7; }
+        30% { transform: translateY(-7px); opacity: 1; }
+        60% { transform: translateY(0); opacity: 0.7; }
+        100% { transform: translateY(0); opacity: 0.7; }
+      }
+      /* Switch de tema */
+      .theme-switch {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.3rem;
+        margin-left: 1rem;
+        color: #bdbdd7;
+        transition: color 0.5s;
+      }
+      /* Switch de tema profesional para modo claro */
+      body.light .switch-theme .w-12.h-7 {
+        background: #e3e7ef !important;
+      }
+      body.light .switch-theme .peer:checked + .w-12.h-7 {
+        background: #b6c6e3 !important;
+      }
+      body.light .switch-theme .absolute.left-0\.5.top-0\.5.w-6.h-6 {
+        background: #fff !important;
+        border: 1.5px solid #e3e7ef;
+        box-shadow: 0 2px 8px 0 rgba(180,180,200,0.10);
+      }
+      body.light .switch-theme .theme-svg {
+        color: #b6c6e3 !important;
+        stroke: #b6c6e3 !important;
+      }
+      body.light .switch-theme .peer:checked + .w-12.h-7 + .absolute.left-0\.5.top-0\.5.w-6.h-6 .theme-svg {
+        color: #b6c6e3 !important;
+        stroke: #b6c6e3 !important;
+      }
+      /* Footer */
+      .footer {
+        text-align: center;
+        color: #bdbdd7;
+        font-size: 0.95rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.02em;
+        opacity: 0.7;
+      }
+      body.light .footer {
+        color: #6a6a8a;
+      }
+      @media (max-width: 900px) {
+        .layout-content-container { max-width: 98vw !important; padding: 0.5rem !important; }
+        .glass { border-radius: 0.8rem !important; }
+        .glam-title { font-size: 1.5rem !important; }
+      }
+      @media (max-width: 600px) {
+        .layout-content-container { max-width: 100vw !important; padding: 0.3rem !important; }
+      }
+    .emoji-anim-btn {
+        transition: transform 0.18s cubic-bezier(.4,0,.2,1);
+      }
+      .emoji-anim-btn:hover, .emoji-anim-btn:focus {
+        transform: scale(1.18) rotate(-6deg);
+      }
+      .emoji-anim-btn:active {
+        transform: scale(0.95) rotate(4deg);
+      }
+    .hide-welcome {
+      opacity: 0 !important;
+      pointer-events: none;
+      transform: translateY(-60px) scale(0.95) !important;
+      transition: all 0.7s cubic-bezier(.4,0,.2,1);
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    /* Scrollbar personalizado solo para el historial del chat */
+      #chat-messages::-webkit-scrollbar {
+        width: 10px;
+        background: transparent;
+      }
+      #chat-messages::-webkit-scrollbar-thumb {
+        background: linear-gradient(120deg, #35355a 0%, #5e60ce 100%);
+        border-radius: 8px;
+        border: 2px solid #23233a;
+      }
+      #chat-messages::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(120deg, #5e60ce 0%, #35355a 100%);
+      }
+      #chat-messages::-webkit-scrollbar-corner {
+        background: transparent;
+      }
+      /* Firefox */
+      #chat-messages {
+        scrollbar-width: thin;
+        scrollbar-color: #5e60ce #23233a;
+      }
+      body.light #chat-messages::-webkit-scrollbar-thumb {
+        background: linear-gradient(120deg, #b6c6e3 0%, #e3e7ef 100%);
+        border: 2px solid #f6f7fa;
+      }
+      body.light #chat-messages {
+        scrollbar-color: #b6c6e3 #f6f7fa;
+      }
+    </style>
+</head>
+<body>
+    <div class="flex flex-col min-h-screen h-screen">
+      <header class="header-bar flex items-center justify-between whitespace-nowrap px-6 py-3 flex-shrink-0">
+        <div class="header-title">
+          <span class="header-icon">✦</span>
+          Glamora AI
+        </div>
+        <div class="flex items-center">
+          <label class="switch-theme relative inline-flex items-center cursor-pointer select-none" style="height:32px;">
+            <input type="checkbox" id="theme-switch" class="sr-only peer">
+            <div class="w-12 h-7 bg-[#35355a] peer-checked:bg-[#f7cac9] rounded-full transition-colors duration-300"></div>
+            <div class="absolute left-0.5 top-0.5 w-6 h-6 bg-white peer-checked:translate-x-5 rounded-full shadow-md transition-transform duration-300 flex items-center justify-center text-lg" id="theme-icon">
+              <svg id="icon-moon" class="theme-svg" width="18" height="18" viewBox="0 0 20 20" fill="none" style="display:block;"><path d="M15.5 13.5A7 7 0 0 1 6.5 4.5a7 7 0 1 0 9 9z" stroke="#5e60ce" stroke-width="1.5" fill="none"/></svg>
+              <svg id="icon-sun" class="theme-svg" width="18" height="18" viewBox="0 0 20 20" fill="none" style="display:none;"><circle cx="10" cy="10" r="4" stroke="#f7c948" stroke-width="1.5" fill="none"/><g stroke="#f7c948" stroke-width="1.2"><line x1="10" y1="1.5" x2="10" y2="3.5"/><line x1="10" y1="16.5" x2="10" y2="18.5"/><line x1="1.5" y1="10" x2="3.5" y2="10"/><line x1="16.5" y1="10" x2="18.5" y2="10"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="14.36" y1="14.36" x2="15.78" y2="15.78"/><line x1="4.22" y1="15.78" x2="5.64" y2="14.36"/><line x1="14.36" y1="5.64" x2="15.78" y2="4.22"/></g></svg>
+            </div>
+          </label>
+        </div>
+      </header>
+      <main class="flex-1 flex flex-col items-center justify-center w-full overflow-hidden">
+        <div class="layout-content-container flex flex-col w-full max-w-[700px] glass shadow-2xl p-4 sm:p-8 md:p-10 h-full mt-6" style="min-width:0;">
+          <div id="welcome-block" class="flex flex-col items-center justify-center py-4 transition-all duration-700">
+            <h1 class="glam-title">Glamora AI</h1>
+            <p class="glam-desc">Descubre tu mejor versión. Asistente de moda con IA, ahora con chat interactivo.</p>
+          </div>
+          <div id="chat-messages" style="flex:1 1 0%; overflow-y:auto; display:flex; flex-direction:column; gap:0.5rem; margin-bottom:0.5rem;"></div>
+          <div id="typing-indicator" class="flex items-center gap-2 px-2 py-1" style="display:none;">
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-8 h-8 shrink-0" style='background-image: url("https://i.pinimg.com/736x/46/58/c1/4658c171c79fbba300979bcc9706b9ec.jpg");'></div>
+            <div class="loader"><span></span><span></span><span></span></div>
+            <span class="text-[#bdbdd7] text-xs">Glamora está escribiendo...</span>
+          </div>
+          <div class="flex items-center px-0 py-4 gap-2 @container flex-shrink-0">
+            <div class="flex w-full flex-1 items-center rounded-2xl glass shadow-lg px-2 py-1 gap-2">
+              <button id="emoji-btn" type="button" class="rounded-xl px-2 input-bg emoji-anim-btn hover:bg-[#35355a] focus:outline-none transition" style="background:none;border:none;box-shadow:none;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center;">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="display:block;">
+                  <circle cx="11" cy="11" r="10" stroke="#5e60ce" stroke-width="1.3" fill="none"/>
+                  <circle cx="8.2" cy="10" r="1" fill="#5e60ce"/>
+                  <circle cx="13.8" cy="10" r="1" fill="#5e60ce"/>
+                  <path d="M8.5 13c.7.7 2.3.7 3 0" stroke="#5e60ce" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                </svg>
+              </button>
+              <input
+                id="chat-input"
+                placeholder="Escribe tu mensaje..."
+                class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl input-bg focus:outline-0 focus:ring-0 border-none focus:border-none h-10 placeholder:text-[#bdbdd7] px-4 text-base font-normal leading-normal"
+              />
+              <div class="emoji-menu" id="emoji-menu">
+                <button>😀</button><button>😁</button><button>😂</button><button>😍</button><button>🥰</button><button>😎</button><button>😇</button><button>😏</button><button>😜</button><button>🤩</button><button>😱</button><button>😡</button><button>😭</button><button>😴</button><button>🤔</button><button>🙌</button><button>👏</button><button>👍</button><button>👗</button><button>👠</button><button>👜</button><button>💄</button><button>👒</button><button>👚</button><button>👖</button><button>👢</button><button>🕶️</button><button>💍</button><button>✨</button><button>🔥</button><button>🌈</button>
+              </div>
+              <button
+                id="send-btn"
+                type="button"
+                class="min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 send-btn text-base font-bold leading-normal shadow-lg transition"
+              >
+                <span class="truncate">Enviar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="footer flex-shrink-0">Realizado por Ariel, Oscar e Iveth<br>Bootcamp de Inteligencia Artificial TALENTOTECH</footer>
+    </div>
+  <script>
+    // Sonidos
+    const sndSend = new Audio('https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa4c3e.mp3'); // sonido enviar
+    const sndReceive = new Audio('https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa4c3e.mp3'); // sonido recibir (puedes cambiar la url)
+    const sndLike = new Audio('https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa4c3e.mp3'); // sonido like (puedes cambiar la url)
+
+    const input = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    const emojiBtn = document.getElementById('emoji-btn');
+    const emojiMenu = document.getElementById('emoji-menu');
+    const messagesDiv = document.getElementById('chat-messages');
+    const typingIndicator = document.getElementById('typing-indicator');
+    const themeSwitch = document.getElementById('theme-switch');
+    const themeIcon = document.getElementById('theme-icon');
+    const placeholders = [
+      "¿Qué tendencia te gustaría conocer hoy?",
+      "¿Buscas inspiración para tu outfit?",
+      "Pregunta por consejos de moda, tendencias o estilos.",
+      "¿Qué prenda te gustaría combinar?",
+      "¿Quieres saber qué colores están de moda?"
+    ];
+    let placeholderIndex = 0;
+    let placeholderInterval;
+
+    function rotatePlaceholder() {
+      placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+      input.setAttribute('placeholder', placeholders[placeholderIndex]);
+    }
+    function startPlaceholderRotation() {
+      input.setAttribute('placeholder', placeholders[0]);
+      placeholderInterval = setInterval(rotatePlaceholder, 4000);
+    }
+    function stopPlaceholderRotation() {
+      clearInterval(placeholderInterval);
+    }
+    input.addEventListener('focus', stopPlaceholderRotation);
+    input.addEventListener('blur', startPlaceholderRotation);
+    startPlaceholderRotation();
+
+    // Tema claro/oscuro
+    function setTheme(light) {
+      const iconMoon = document.getElementById('icon-moon');
+      const iconSun = document.getElementById('icon-sun');
+      if (light) {
+        document.body.classList.add('light');
+        iconMoon.style.display = 'none';
+        iconSun.style.display = 'block';
+        themeSwitch.checked = true;
+      } else {
+        document.body.classList.remove('light');
+        iconMoon.style.display = 'block';
+        iconSun.style.display = 'none';
+        themeSwitch.checked = false;
+      }
+    }
+    themeSwitch.addEventListener('change', () => {
+      setTheme(themeSwitch.checked);
+    });
+    // Inicializar el estado del switch según el tema actual
+    setTheme(document.body.classList.contains('light'));
+
+    function addMessage(text, from) {
+      // from: 'user' o 'bot'
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `flex items-end gap-3 p-2 ${from === 'user' ? 'justify-end' : ''} msg-appear`;
+      // Ocultar bienvenida al primer mensaje
+      const welcomeBlock = document.getElementById('welcome-block');
+      if (welcomeBlock && !welcomeBlock.classList.contains('hide-welcome')) {
+        welcomeBlock.classList.add('hide-welcome');
+      }
+      if (from === 'user') {
+        msgDiv.innerHTML = `
+          <div class="flex flex-1 flex-col gap-1 items-end">
+            <p class="text-[#bdbdd7] text-[13px] font-normal leading-normal max-w-[360px] text-right">Tú</p>
+            <p class="text-base font-normal leading-normal flex max-w-[360px] rounded-xl px-4 py-3 chat-bubble-user shadow">
+              ${text}
+            </p>
+          </div>
+          <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 h-10 shrink-0 border-2 border-[#5e60ce]" style='background-image: url("https://i.pinimg.com/736x/13/b8/48/13b848d6a8a9209141d211791b3ab6f8.jpg");'></div>
+        `;
+      } else {
+        msgDiv.innerHTML = `
+          <div class="flex flex-row items-center gap-2">
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 h-10 shrink-0 border-2 border-[#5e60ce]" style='background-image: url("https://i.pinimg.com/736x/46/58/c1/4658c171c79fbba300979bcc9706b9ec.jpg");'></div>
+            <div class="flex flex-1 flex-col gap-1 items-start relative">
+              <p class="text-[#bdbdd7] text-[13px] font-normal leading-normal max-w-[360px]">Glamora AI</p>
+              <div class="flex items-center">
+                <p class="text-base font-normal leading-normal flex max-w-[360px] rounded-xl px-4 py-3 chat-bubble-bot shadow">
+                  ${text}
+                </p>
+                <span class="like-heart ml-2 cursor-pointer select-none flex items-center" style="align-self:center;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="heart-svg" style="vertical-align:middle;display:block;">
+                    <path class="heart-shape" d="M12 20.5c-3.2-2.8-7-5.2-7-8.5C5 8 7 6.5 9 6.5c1.1 0 2.1.6 3 1.7.9-1.1 1.9-1.7 3-1.7 2 0 4 1.5 4 5.5 0 3.3-3.8 5.7-7 8.5z" stroke="#e2557b" stroke-width="1.5" fill="none"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      messagesDiv.appendChild(msgDiv);
+      messagesDiv.scrollTo({ top: messagesDiv.scrollHeight, behavior: 'smooth' });
+      // Like heart animation and logic
+      if (from === 'bot') {
+        const heart = msgDiv.querySelector('.like-heart');
+        let liked = false;
+        heart.addEventListener('click', function(e) {
+          e.stopPropagation();
+          liked = !liked;
+          const svg = heart.querySelector('.heart-svg .heart-shape');
+          if (liked) {
+            svg.setAttribute('fill', '#e2557b');
+            svg.setAttribute('stroke', '#e2557b');
+            heart.animate([
+              { transform: 'scale(1)', filter: 'drop-shadow(0 0 0 #e2557b)' },
+              { transform: 'scale(1.25) translateY(-6px)', filter: 'drop-shadow(0 0 8px #e2557b88)' },
+              { transform: 'scale(1)', filter: 'drop-shadow(0 0 0 #e2557b)' }
+            ], { duration: 420, easing: 'cubic-bezier(.4,0,.2,1)' });
+            try { sndLike.currentTime = 0; sndLike.play(); } catch(e){}
+          } else {
+            svg.setAttribute('fill', 'none');
+            svg.setAttribute('stroke', '#e2557b');
+          }
+        });
+      }
+      if (from === 'user') {
+        try { sndSend.currentTime = 0; sndSend.play(); } catch(e){}
+      } else if (from === 'bot') {
+        try { sndReceive.currentTime = 0; sndReceive.play(); } catch(e){}
+      }
+    }
+
+    // Emoji menu logic
+    emojiBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      emojiMenu.style.display = emojiMenu.style.display === 'flex' ? 'none' : 'flex';
+    });
+    document.addEventListener('click', function() {
+      emojiMenu.style.display = 'none';
+    });
+    emojiMenu.addEventListener('click', function(e) {
+      if (e.target.tagName === 'BUTTON') {
+        input.value += e.target.textContent;
+        input.focus();
+      }
+    });
+
+    // Loader/typing indicator
+    function showTyping() {
+      typingIndicator.style.display = 'flex';
+      messagesDiv.scrollTo({ top: messagesDiv.scrollHeight + 100, behavior: 'smooth' });
+    }
+    function hideTyping() {
+      typingIndicator.style.display = 'none';
+    }
+
+    async function sendMessage() {
+      const pregunta = input.value.trim();
+      if (!pregunta) return;
+      addMessage(pregunta, 'user');
+      input.value = '';
+      showTyping();
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pregunta })
+        });
+        const data = await res.json();
+        hideTyping();
+        addMessage(data.respuesta, 'bot');
+      } catch (e) {
+        hideTyping();
+        addMessage('Error conectando con el servidor.', 'bot');
+      }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+  </body>
+</html>
