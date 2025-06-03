@@ -25,28 +25,39 @@ Glamora AI es un asistente conversacional de moda que utiliza inteligencia artif
 
 ## Instalación y Uso
 
-1. **Clona el repositorio**
+### 1. Clona el repositorio
 
-2. **Instala las dependencias**
-   ```sh
-   pip install openai python-dotenv
-   ```
+### 2. Crea y activa el entorno virtual (Windows)
+```sh
+python -m venv venv
+.\venv\Scripts\activate
+```
 
-3. **Configura tu API key de OpenAI**
-   - Crea un archivo `.env` en la raíz del proyecto:
-     ```
-     OPENAI_API_KEY=tu_api_key_aqui
-     ```
+### 3. Instala las dependencias
+```sh
+pip install -r requirements.txt
+```
 
-4. **Ejecuta el backend o el script de prueba**
-   - Para probar el modelo directamente:
-     ```sh
-     python LLM_v3.py
-     ```
-   - Para levantar la API y la web, sigue las instrucciones de tu backend (Flask, FastAPI, etc.).
+### 4. Configura tu API key de OpenAI
+Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
+```
+OPENAI_API_KEY=tu_api_key_aqui
+```
 
-5. **Abre la web**
-   - Accede a la interfaz en tu navegador (por ejemplo, http://127.0.0.1:8000/)
+### 5. Ejecuta el script de prueba
+```sh
+python LLM_v3.py
+```
+
+### 6. Levanta el servidor web (FastAPI + Uvicorn)
+Desde la carpeta `app`:
+```sh
+cd app
+uvicorn main:app --reload
+```
+
+### 7. Abre la web
+Accede a la interfaz en tu navegador: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
 ## Seguridad
 - **Nunca subas tu archivo `.env` al repositorio.**
