@@ -10,6 +10,7 @@ __pycache__/
 faiss_index.bin
 faiss_index.bin.meta.npy
 RAG/
+rag/
 
 # Archivos temporales y del sistema
 .DS_Store
