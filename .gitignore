@@ -9,6 +9,7 @@ __pycache__/
 # Archivos y carpetas generados por el sistema RAG
 faiss_index.bin
 faiss_index.bin.meta.npy
+RAG/
 
 # Archivos temporales y del sistema
 .DS_Store
