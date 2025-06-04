@@ -1,18 +1,16 @@
-# Usa una imagen base oficial de Python
-FROM python:3.11-slim
+FROM python:3.10-slim
 
-# Establece el directorio de trabajo en el contenedor
-WORKDIR /
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Copia el archivo de requerimientos y el código fuente al contenedor
+WORKDIR /app
+
 COPY requirements.txt ./
-COPY . .
-
-# Instala las dependencias
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expone el puerto en el que correrá la aplicación
+COPY . .
+
+RUN mkdir -p /app/static
+
 EXPOSE 8000
 
-# Comando para correr la aplicación
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["sh", "-c", "ls -lR /app && ls -lR /app/app && uvicorn app.main:app --host 0.0.0.0 --port 8000"]

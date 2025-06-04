@@ -10,6 +10,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       html, body {
+        margin: 0 !important;
+        padding: 0 !important;
         transition: background 0.5s;
       }
       body {
@@ -17,7 +19,28 @@
         background: linear-gradient(120deg, #181824 0%, #23233a 100%);
       }
       body.light {
-        background: linear-gradient(120deg, #f6f7fa 0%, #e3e7ef 100%);
+        background: linear-gradient(120deg, #fff 0%, #e3e7ef 100%);
+      }
+      .layout-content-container {
+        background: rgba(34, 36, 58, 0.92);
+        box-shadow: 0 8px 32px 0 rgba(30, 30, 60, 0.18), 0 1.5px 8px 0 rgba(80,80,120,0.10);
+        border-radius: 24px;
+        border: 1.5px solid rgba(80,80,120,0.16);
+        margin-top: 2.5rem !important;
+        margin-bottom: 2.5rem !important;
+        padding: 2.5rem 2.5rem 2rem 2.5rem !important;
+        transition: background 0.5s, box-shadow 0.5s, border 0.5s;
+      }
+      body.light .layout-content-container {
+        background: #fff;
+        box-shadow: 0 8px 32px 0 rgba(94,96,206,0.10), 0 1.5px 8px 0 rgba(94,96,206,0.04);
+        border: 1.5px solid #5e60ce;
+      }
+      @media (max-width: 900px) {
+        .layout-content-container { max-width: 98vw !important; padding: 1.2rem !important; }
+      }
+      @media (max-width: 600px) {
+        .layout-content-container { max-width: 100vw !important; padding: 0.5rem !important; }
       }
       .glass {
         background: rgba(30, 30, 40, 0.85);
@@ -364,22 +387,24 @@
 </head>
 <body>
     <div class="flex flex-col min-h-screen h-screen">
-      <header class="header-bar flex items-center justify-between whitespace-nowrap px-6 py-3 flex-shrink-0">
-        <div class="header-title">
-          <span class="header-icon">✦</span>
-          Glamora AI
-        </div>
-        <div class="flex items-center">
-          <label class="switch-theme relative inline-flex items-center cursor-pointer select-none" style="height:32px;">
-            <input type="checkbox" id="theme-switch" class="sr-only peer">
-            <div class="w-12 h-7 bg-[#35355a] peer-checked:bg-[#f7cac9] rounded-full transition-colors duration-300"></div>
-            <div class="absolute left-0.5 top-0.5 w-6 h-6 bg-white peer-checked:translate-x-5 rounded-full shadow-md transition-transform duration-300 flex items-center justify-center text-lg" id="theme-icon">
-              <svg id="icon-moon" class="theme-svg" width="18" height="18" viewBox="0 0 20 20" fill="none" style="display:block;"><path d="M15.5 13.5A7 7 0 0 1 6.5 4.5a7 7 0 1 0 9 9z" stroke="#5e60ce" stroke-width="1.5" fill="none"/></svg>
-              <svg id="icon-sun" class="theme-svg" width="18" height="18" viewBox="0 0 20 20" fill="none" style="display:none;"><circle cx="10" cy="10" r="4" stroke="#f7c948" stroke-width="1.5" fill="none"/><g stroke="#f7c948" stroke-width="1.2"><line x1="10" y1="1.5" x2="10" y2="3.5"/><line x1="10" y1="16.5" x2="10" y2="18.5"/><line x1="1.5" y1="10" x2="3.5" y2="10"/><line x1="16.5" y1="10" x2="18.5" y2="10"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="14.36" y1="14.36" x2="15.78" y2="15.78"/><line x1="4.22" y1="15.78" x2="5.64" y2="14.36"/><line x1="14.36" y1="5.64" x2="15.78" y2="4.22"/></g></svg>
-            </div>
-          </label>
-        </div>
-      </header>
+      <div class="w-full flex justify-center">
+        <header class="header-bar flex items-center justify-between whitespace-nowrap px-8 py-3 flex-shrink-0 w-full max-w-[700px] mx-auto">
+          <div class="header-title">
+            <span class="header-icon">✦</span>
+            Glamora AI
+          </div>
+          <div class="flex items-center">
+            <label class="switch-theme relative inline-flex items-center cursor-pointer select-none" style="height:32px;">
+              <input type="checkbox" id="theme-switch" class="sr-only peer">
+              <div class="w-12 h-7 bg-[#35355a] peer-checked:bg-[#f7cac9] rounded-full transition-colors duration-300"></div>
+              <div class="absolute left-0.5 top-0.5 w-6 h-6 bg-white peer-checked:translate-x-5 rounded-full shadow-md transition-transform duration-300 flex items-center justify-center text-lg" id="theme-icon">
+                <svg id="icon-moon" class="theme-svg" width="18" height="18" viewBox="0 0 20 20" fill="none" style="display:block;"><path d="M15.5 13.5A7 7 0 0 1 6.5 4.5a7 7 0 1 0 9 9z" stroke="#5e60ce" stroke-width="1.5" fill="none"/></svg>
+                <svg id="icon-sun" class="theme-svg" width="18" height="18" viewBox="0 0 20 20" fill="none" style="display:none;"><circle cx="10" cy="10" r="4" stroke="#f7c948" stroke-width="1.5" fill="none"/><g stroke="#f7c948" stroke-width="1.2"><line x1="10" y1="1.5" x2="10" y2="3.5"/><line x1="10" y1="16.5" x2="10" y2="18.5"/><line x1="1.5" y1="10" x2="3.5" y2="10"/><line x1="16.5" y1="10" x2="18.5" y2="10"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="14.36" y1="14.36" x2="15.78" y2="15.78"/><line x1="4.22" y1="15.78" x2="5.64" y2="14.36"/><line x1="14.36" y1="5.64" x2="15.78" y2="4.22"/></g></svg>
+              </div>
+            </label>
+          </div>
+        </header>
+      </div>
       <main class="flex-1 flex flex-col items-center justify-center w-full overflow-hidden">
         <div class="layout-content-container flex flex-col w-full max-w-[700px] glass shadow-2xl p-4 sm:p-8 md:p-10 h-full mt-6" style="min-width:0;">
           <div id="welcome-block" class="flex flex-col items-center justify-center py-4 transition-all duration-700">
@@ -388,7 +413,7 @@
           </div>
           <div id="chat-messages" style="flex:1 1 0%; overflow-y:auto; display:flex; flex-direction:column; gap:0.5rem; margin-bottom:0.5rem;"></div>
           <div id="typing-indicator" class="flex items-center gap-2 px-2 py-1" style="display:none;">
-            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-8 h-8 shrink-0" style='background-image: url("https://i.pinimg.com/736x/46/58/c1/4658c171c79fbba300979bcc9706b9ec.jpg");'></div>
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-8 h-8 shrink-0" style='background-image: url("https://i.pinimg.com/736x/f9/ca/51/f9ca51e60c08ccd18ed041eb7ba99038.jpg");'></div>
             <div class="loader"><span></span><span></span><span></span></div>
             <span class="text-[#bdbdd7] text-xs">Glamora está escribiendo...</span>
           </div>
@@ -506,7 +531,7 @@
       } else {
         msgDiv.innerHTML = `
           <div class="flex flex-row items-center gap-2">
-            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 h-10 shrink-0 border-2 border-[#5e60ce]" style='background-image: url("https://i.pinimg.com/736x/46/58/c1/4658c171c79fbba300979bcc9706b9ec.jpg");'></div>
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 h-10 shrink-0 border-2 border-[#5e60ce]" style='background-image: url("https://i.pinimg.com/736x/f9/ca/51/f9ca51e60c08ccd18ed041eb7ba99038.jpg");'></div>
             <div class="flex flex-1 flex-col gap-1 items-start relative">
               <p class="text-[#bdbdd7] text-[13px] font-normal leading-normal max-w-[360px]">Glamora AI</p>
               <div class="flex items-center">
@@ -605,6 +630,302 @@
       if (e.key === 'Enter') {
         sendMessage();
       }
+    });
+  </script>
+
+  <!-- Botón de llamada flotante y bocadillo con formulario -->
+  <button id="call-btn" type="button" aria-label="Llamar" class="call-anim-btn fixed bottom-8 right-8 z-50 bg-[#5e60ce] hover:bg-[#23233a] text-white rounded-full shadow-xl w-16 h-16 flex items-center justify-center transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-[#5e60ce44]">
+    <svg width="38" height="38" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="22" fill="#fff" fill-opacity="0.13"/>
+      <circle cx="24" cy="24" r="18" fill="#23233a" fill-opacity="0.18"/>
+      <circle cx="24" cy="24" r="15" fill="#5e60ce"/>
+      <path d="M32.2 29.7c-1.1 1.1-2.2 2.1-3.5 2.1-2.2 0-6.7-3.7-8.7-5.7-2-2-5.7-6.5-5.7-8.7 0-1.3 1-2.4 2.1-3.5 0.7-0.7 1.7-0.7 2.4 0l2.1 2.1c0.7 0.7 0.7 1.7 0 2.4l-0.7 0.7c0.3 0.7 1.1 1.8 2.2 2.9 1.1 1.1 2.2 1.9 2.9 2.2l0.7-0.7c0.7-0.7 1.7-0.7 2.4 0l2.1 2.1c0.7 0.7 0.7 1.7 0 2.4z" fill="#fff"/>
+      <path d="M32.2 29.7c-1.1 1.1-2.2 2.1-3.5 2.1-2.2 0-6.7-3.7-8.7-5.7-2-2-5.7-6.5-5.7-8.7 0-1.3 1-2.4 2.1-3.5 0.7-0.7 1.7-0.7 2.4 0l2.1 2.1c0.7 0.7 0.7 1.7 0 2.4l-0.7 0.7c0.3 0.7 1.1 1.8 2.2 2.9 1.1 1.1 2.2 1.9 2.9 2.2l0.7-0.7c0.7-0.7 1.7-0.7 2.4 0l2.1 2.1c0.7 0.7 0.7 1.7 0 2.4z" fill="#fff" fill-opacity="0.18"/>
+    </svg>
+  </button>
+
+  <style>
+    #call-btn {
+      width: 60px !important;
+      height: 60px !important;
+      right: 16px !important;
+      bottom: 24px !important;
+      opacity: 1 !important;
+      background: #fff !important;
+      border: 3px solid #5e60ce !important;
+      box-shadow: 0 6px 24px 0 rgba(94,96,206,0.18), 0 2px 8px 0 rgba(80,80,120,0.10);
+      border-radius: 22px !important;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      position: fixed;
+      transition: box-shadow 0.3s, background 0.3s, border 0.3s;
+      touch-action: none;
+      user-select: none;
+    }
+    #call-btn svg {
+      width: 36px !important;
+      height: 36px !important;
+    }
+    @media (max-width: 600px) {
+      #call-btn {
+        width: 60px !important;
+        height: 60px !important;
+        right: 16px !important;
+        bottom: 24px !important;
+      }
+      #call-btn svg {
+        width: 36px !important;
+        height: 36px !important;
+      }
+    }
+    @keyframes call-bounce {
+      0%, 100% { transform: scale(1); }
+      20% { transform: scale(1.12) translateY(-6px); }
+      40% { transform: scale(0.96) translateY(2px); }
+      60% { transform: scale(1.08) translateY(-3px); }
+      80% { transform: scale(0.98) translateY(1px); }
+    }
+    .call-anim-btn:hover {
+      animation: call-bounce 0.7s cubic-bezier(.4,0,.2,1);
+    }
+  </style>
+  <div id="call-bubble" class="fixed bottom-28 right-8 z-50 bg-white dark:bg-[#23233a] border border-[#5e60ce33] rounded-2xl shadow-2xl p-4 sm:p-6 w-80 max-w-[95vw] transition-all duration-300 opacity-0 pointer-events-none scale-95" style="box-shadow: 0 8px 32px 0 rgba(94,96,206,0.18);">
+    <form id="call-form" class="flex flex-col gap-4 w-full">
+      <div class="flex items-center gap-2 mb-2">
+        <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="22" fill="#fff" fill-opacity="0.13"/>
+          <circle cx="24" cy="24" r="18" fill="#23233a" fill-opacity="0.18"/>
+          <circle cx="24" cy="24" r="15" fill="#5e60ce"/>
+          <path d="M32.2 29.7c-1.1 1.1-2.2 2.1-3.5 2.1-2.2 0-6.7-3.7-8.7-5.7-2-2-5.7-6.5-5.7-8.7 0-1.3 1-2.4 2.1-3.5 0.7-0.7 1.7-0.7 2.4 0l2.1 2.1c0.7 0.7 0.7 1.7 0 2.4l-0.7 0.7c0.3 0.7 1.1 1.8 2.2 2.9 1.1 1.1 2.2 1.9 2.9 2.2l0.7-0.7c0.7-0.7 1.7-0.7 2.4 0l2.1 2.1c0.7 0.7 0.7 1.7 0 2.4z" fill="#fff"/>
+          <path d="M32.2 29.7c-1.1 1.1-2.2 2.1-3.5 2.1-2.2 0-6.7-3.7-8.7-5.7-2-2-5.7-6.5-5.7-8.7 0-1.3 1-2.4 2.1-3.5 0.7-0.7 1.7-0.7 2.4 0l2.1 2.1c0.7 0.7 0.7 1.7 0 2.4l-0.7 0.7c0.3 0.7 1.1 1.8 2.2 2.9 1.1 1.1 2.2 1.9 2.9 2.2l0.7-0.7c0.7-0.7 1.7-0.7 2.4 0l2.1 2.1c0.7 0.7 0.7 1.7 0 2.4z" fill="#fff" fill-opacity="0.18"/>
+        </svg>
+        <span class="font-semibold call-title text-lg">Solicitar llamada</span>
+      </div>
+      <label class="flex flex-col gap-1 text-sm font-medium call-label w-full">
+        País e identificador de llamada
+        <div class="flex flex-wrap gap-2 items-center w-full">
+          <select id="country-code" name="country-code" class="rounded-lg border border-[#b6c6e3] px-2 py-2 bg-[#f6f7fa] dark:bg-[#23233a] dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-[#5e60ce] w-[110px] min-w-[90px]">
+            <option value="+57" data-placeholder="Ej: +573001234567">🇨🇴 +57</option>
+            <option value="+34" data-placeholder="Ej: +34600123456">🇪🇸 +34</option>
+            <option value="+52" data-placeholder="Ej: +525512345678">🇲🇽 +52</option>
+            <option value="+1" data-placeholder="Ej: +13051234567">🇺🇸 +1</option>
+            <option value="+51" data-placeholder="Ej: +51900123456">🇵🇪 +51</option>
+            <option value="+54" data-placeholder="Ej: +5491112345678">🇦🇷 +54</option>
+            <option value="+55" data-placeholder="Ej: +5511912345678">🇧🇷 +55</option>
+            <option value="+593" data-placeholder="Ej: +593991234567">🇪🇨 +593</option>
+            <option value="+58" data-placeholder="Ej: +584121234567">🇻🇪 +58</option>
+          </select>
+          <input type="tel" id="telefono" name="telefono" required pattern="[\+][0-9]{8,15}" placeholder="Ej: +573001234567" class="flex-1 min-w-[120px] rounded-lg border border-[#b6c6e3] px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#5e60ce] text-base bg-[#f6f7fa] dark:bg-[#23233a] dark:text-white" autocomplete="tel" />
+        </div>
+      </label>
+      <button type="submit" class="mt-2 bg-[#5e60ce] hover:bg-[#23233a] text-white font-bold py-2 rounded-lg transition-colors duration-300 w-full">Solicitar</button>
+      <button type="button" id="close-call-bubble" class="absolute top-2 right-2 text-[#5e60ce] hover:text-[#23233a] dark:hover:text-white bg-transparent rounded-full p-1 focus:outline-none" aria-label="Cerrar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </form>
+  </div>
+
+  <style>
+    @media (max-width: 500px) {
+      #call-bubble {
+        right: 2vw !important;
+        left: 2vw !important;
+        width: 96vw !important;
+        min-width: 0 !important;
+        max-width: 98vw !important;
+        padding: 1rem !important;
+      }
+      #call-bubble form label > div {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.5rem !important;
+      }
+    }
+    #call-bubble,
+    #call-bubble select,
+    #call-bubble input {
+      transition: background 0.4s, color 0.4s, border 0.4s;
+    }
+    .call-title, .call-label {
+      color: #23233a !important;
+    }
+    body.light #call-bubble {
+      background: #fff !important;
+      border-color: #e3e7ef !important;
+    }
+    body.light #call-bubble select,
+    body.light #call-bubble input {
+      background: #f6f7fa !important;
+      color: #23233a !important;
+      border-color: #b6c6e3 !important;
+    }
+    body.light #call-bubble .call-title,
+    body.light #call-bubble .call-label {
+      color: #23233a !important;
+    }
+    body:not(.light) #call-bubble {
+      background: #23233a !important;
+      border-color: #5e60ce33 !important;
+    }
+    body:not(.light) #call-bubble select,
+    body:not(.light) #call-bubble input {
+      background: #23233a !important;
+      color: #e3e7ef !important;
+      border-color: #35355a !important;
+    }
+    body:not(.light) #call-bubble .call-title,
+    body:not(.light) #call-bubble .call-label {
+      color: #e3e7ef !important;
+    }
+  </style>
+  <script>
+    // ...script anterior...
+    // Botón de llamada y bocadillo
+    const callBtn = document.getElementById('call-btn');
+    const callBubble = document.getElementById('call-bubble');
+    const closeCallBubble = document.getElementById('close-call-bubble');
+
+    // --- Drag & Drop SOLO para móvil (pantallas <= 600px) ---
+    function isMobileScreen() {
+      return window.innerWidth <= 600;
+    }
+    let isDragging = false;
+    let dragStartX, dragStartY, btnStartX, btnStartY;
+    let dragMoved = false;
+
+    function setBtnPosition(x, y) {
+      callBtn.style.right = 'auto';
+      callBtn.style.bottom = 'auto';
+      callBtn.style.left = x + 'px';
+      callBtn.style.top = y + 'px';
+    }
+    function getBtnPosition() {
+      const rect = callBtn.getBoundingClientRect();
+      return { x: rect.left, y: rect.top };
+    }
+    // Touch events SOLO en móvil
+    if (isMobileScreen()) {
+      callBtn.addEventListener('touchstart', function(e) {
+        isDragging = true;
+        dragMoved = false;
+        const touch = e.touches[0];
+        dragStartX = touch.clientX;
+        dragStartY = touch.clientY;
+        const pos = getBtnPosition();
+        btnStartX = pos.x;
+        btnStartY = pos.y;
+      }, { passive: false });
+      document.addEventListener('touchmove', function(e) {
+        if (!isDragging) return;
+        dragMoved = true;
+        const touch = e.touches[0];
+        const dx = touch.clientX - dragStartX;
+        const dy = touch.clientY - dragStartY;
+        setBtnPosition(btnStartX + dx, btnStartY + dy);
+      }, { passive: false });
+      document.addEventListener('touchend', function(e) {
+        if (isDragging) {
+          setTimeout(() => { isDragging = false; }, 10);
+        }
+      });
+    }
+
+    // Click/tap para mostrar el menú solo si NO fue drag
+    callBtn.addEventListener('click', (e) => {
+      if (dragMoved) { dragMoved = false; return; }
+      if (callBubble.style.opacity === '1') {
+        callBubble.style.opacity = '0';
+        callBubble.style.pointerEvents = 'none';
+        callBubble.style.transform = 'scale(0.95)';
+      } else {
+        callBubble.style.opacity = '1';
+        callBubble.style.pointerEvents = 'auto';
+        callBubble.style.transform = 'scale(1)';
+      }
+    });
+    closeCallBubble.addEventListener('click', () => {
+      callBubble.style.opacity = '0';
+      callBubble.style.pointerEvents = 'none';
+      callBubble.style.transform = 'scale(0.95)';
+    });
+    document.addEventListener('click', (e) => {
+      if (!callBubble.contains(e.target) && e.target !== callBtn) {
+        callBubble.style.opacity = '0';
+        callBubble.style.pointerEvents = 'none';
+        callBubble.style.transform = 'scale(0.95)';
+      }
+    });
+    callBubble.addEventListener('click', e => e.stopPropagation());
+    callBtn.addEventListener('click', e => e.stopPropagation());
+    // Selector de país: actualiza placeholder y autocompleta código
+    const countryCode = document.getElementById('country-code');
+    const telefonoInput = document.getElementById('telefono');
+    countryCode.addEventListener('change', function() {
+      const selected = this.options[this.selectedIndex];
+      telefonoInput.placeholder = selected.getAttribute('data-placeholder');
+      // Si el input ya tiene un número, reemplaza el código de país al inicio
+      const current = telefonoInput.value.trim();
+      const newCode = this.value;
+      if (!current || current === '' || current.startsWith('+')) {
+        telefonoInput.value = newCode;
+      } else {
+        // Si el usuario ya escribió algo, reemplaza el código anterior
+        telefonoInput.value = newCode + current.replace(/^\+\d+/, '');
+      }
+    });
+    // Protección: no dejar borrar el código de país
+    telefonoInput.addEventListener('keydown', function(e) {
+      const code = countryCode.value;
+      if (
+        (this.selectionStart <= code.length &&
+          [8, 46].includes(e.keyCode)) // backspace o delete
+      ) {
+        e.preventDefault();
+      }
+    });
+    telefonoInput.addEventListener('input', function() {
+      const code = countryCode.value;
+      if (!this.value.startsWith(code)) {
+        this.value = code;
+      }
+      // Elimina espacios automáticamente
+      this.value = this.value.replace(/\s+/g, '');
+    });
+    // Inicializa placeholder y valor al cargar
+    window.addEventListener('DOMContentLoaded', () => {
+      const selected = countryCode.options[countryCode.selectedIndex];
+      telefonoInput.placeholder = selected.getAttribute('data-placeholder');
+      telefonoInput.value = countryCode.value;
+    });
+    document.getElementById('call-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      let tel = this.telefono.value.replace(/\s+/g, '');
+      try {
+        const res = await fetch('/api/llamar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ telefono: tel })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('Llamada solicitada correctamente.');
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (err) {
+        alert('Error conectando con el servidor.');
+      }
+      callBubble.style.opacity = '0';
+      callBubble.style.pointerEvents = 'none';
+      callBubble.style.transform = 'scale(0.95)';
+      this.reset();
+      // Restaura el código de país tras reset
+      setTimeout(() => {
+        telefonoInput.value = countryCode.value;
+      }, 100);
     });
   </script>
   </body>

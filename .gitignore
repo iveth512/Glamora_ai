@@ -1,37 +1,23 @@
-# Entornos virtuales
+# Entorno y dependencias
 venv/
-ENV/
-.env/
-.venv/
-
-# Archivos de Python compilados
 __pycache__/
-*.py[cod]
-*$py.class
+*.pyc
 
-# Archivos de entorno y configuración
+# Archivos de configuración sensibles
 .env
-.env.*
 
-# Archivos de logs
+# Archivos y carpetas generados por el sistema RAG
+faiss_index.bin
+faiss_index.bin.meta.npy
+
+# Archivos temporales y del sistema
+.DS_Store
+*.swp
+
+# Archivos y carpetas de Docker que NO deben subirse (pero NO ignores Dockerfile ni docker-compose.yml)
+# (No ignores docker-compose.yml ni Dockerfile)
+
+# Archivos de usuario
 *.log
 
-# Archivos de bases de datos
-*.sqlite3
-*.db
-
-# Archivos de configuración de editores
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-
-# Archivos de sistema
-.DS_Store
-Thumbs.db
-
-# Otros
-.qodo
-
-# Evitar duplicados
-__pycache__/
+# Mantén todo lo necesario para Docker y despliegue

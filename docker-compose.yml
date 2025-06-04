@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  glamora:
+    build: .
+    container_name: glamora-app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./RAG:/app/RAG
+      - ./faiss_index.bin:/app/faiss_index.bin
+      - ./faiss_index.bin.meta.npy:/app/faiss_index.bin.meta.npy
+    restart: unless-stopped

@@ -1,3 +1,9 @@
 fastapi
 uvicorn
+openai
+python-dotenv
+requests
+sentence-transformers
+faiss-cpu
+numpy
 jinja2
